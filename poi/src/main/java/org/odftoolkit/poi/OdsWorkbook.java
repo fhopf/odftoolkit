@@ -93,8 +93,10 @@ public class OdsWorkbook implements Workbook {
     }
     
 
-    public int getSheetIndex(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getSheetIndex(String name) {
+        List<Table> tables = doc.getTableList();
+        Table table = doc.getSheetByName(name);
+        return tables.indexOf(table);
     }
 
     public int getSheetIndex(Sheet sheet) {
@@ -102,12 +104,12 @@ public class OdsWorkbook implements Workbook {
     }
 
     public Sheet createSheet() {
-        Table newTable = doc.appendSheet(createNewSheetName());
-        return new OdsSheet(this, newTable);
+        return createSheet(createNewSheetName());
     }
 
-    public Sheet createSheet(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Sheet createSheet(String name) {
+        Table newTable = doc.appendSheet(name);
+        return new OdsSheet(this, newTable);
     }
 
     public Sheet cloneSheet(int i) {

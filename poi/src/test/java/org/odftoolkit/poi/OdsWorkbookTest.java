@@ -222,6 +222,27 @@ public class OdsWorkbookTest {
         workbook.removeSheetAt(12);
     }
     
+    @Test
+    public void sheetIndexOnExistingName() {
+        Workbook workbook = new OdsWorkbook();
+        workbook.createSheet("name");
+        assertEquals(0, workbook.getSheetIndex("name"));
+    }
+    
+    @Test
+    public void sheetIndexOnNonExistingName() {
+        Workbook workbook = new OdsWorkbook();
+        workbook.createSheet("name");
+        assertEquals(-1, workbook.getSheetIndex("nonExistingName"));
+    }
+    
+    @Test
+    public void sheetCanBeCreatedByName() {
+        Workbook workbook = new OdsWorkbook();
+        Sheet createdSheet = workbook.createSheet("name");
+        assertEquals("name", createdSheet.getSheetName());
+    }
+    
     private InputStream simpleSheetStream() {
         return getClass().getResourceAsStream("/simpleSheet.ods");
     }

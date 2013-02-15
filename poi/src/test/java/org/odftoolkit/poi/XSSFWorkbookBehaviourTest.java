@@ -75,4 +75,19 @@ public class XSSFWorkbookBehaviourTest {
         workbook.removeSheetAt(12);
     }
     
+    @Test
+    public void sheetIndexOnExistingName() {
+        Workbook workbook = new XSSFWorkbook();
+        workbook.createSheet("name");
+        assertEquals(0, workbook.getSheetIndex("name"));
+    }
+    
+    @Test
+    public void sheetIndexOnNonExistingName() {
+        Workbook workbook = new XSSFWorkbook();
+        workbook.createSheet("name");
+        assertEquals(-1, workbook.getSheetIndex("nonExistingName"));
+    }
+    
+    
 }
