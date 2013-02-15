@@ -43,6 +43,8 @@ public class OdsWorkbook implements Workbook {
     public OdsWorkbook() {
         try {
             this.doc = SpreadsheetDocument.newSpreadsheetDocument();
+            // poi doesn't append a sheet automatically, so remove it
+            doc.removeSheet(0);
         } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
@@ -100,7 +102,7 @@ public class OdsWorkbook implements Workbook {
     }
 
     public Sheet createSheet() {
-        Table newTable = doc.appendSheet("Sheet0");
+        Table newTable = doc.appendSheet(createNewSheetName());
         return new OdsSheet(this, newTable);
     }
 
@@ -117,17 +119,28 @@ public class OdsWorkbook implements Workbook {
     }
 
     public Sheet getSheetAt(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Table table = doc.getSheetByIndex(i);
+        if (table == null) {
+            String range = "-";
+            if (doc.getSheetCount() > 0) {
+                range = "0..." + doc.getSheetCount();
+            }
+            throw new IllegalArgumentException(String.format("Sheet at index %d doesn't exist. Available: %s", Integer.valueOf(i), range));
+        }
+        return new OdsSheet(this, table);
     }
 
     public Sheet getSheet(String name) {
         Table table = doc.getSheetByName(name);
+        return getSheetOrNull(table);
+    }
+    
+    private OdsSheet getSheetOrNull(Table table) {
         if (table == null) {
             return null;
         } else {
             return new OdsSheet(this, table);
         }
-        
     }
 
     public void removeSheetAt(int i) {
@@ -287,6 +300,16 @@ public class OdsWorkbook implements Workbook {
             throw new IllegalArgumentException();
         }
         return sheetByIndex;
+    }
+
+    private String createNewSheetName() {
+        int index = doc.getSheetCount();
+        String name = "Sheet" + index;
+        while (doc.getSheetByName(name) != null) {
+            index++;
+            name = "Sheet" + index;
+        }
+        return name;
     }
     
 }

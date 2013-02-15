@@ -169,6 +169,39 @@ public class OdsWorkbookTest {
         assertNull(sheet);
     }
     
+    @Test
+    public void sheetByIndexForNewSheet() {
+        OdsWorkbook workbook = new OdsWorkbook();
+        Sheet sheet0 = workbook.createSheet();
+        Sheet sheet1 = workbook.createSheet();
+        
+        Sheet index0 = workbook.getSheetAt(0);
+        Sheet index1 = workbook.getSheetAt(1);
+        
+        assertEquals(sheet0, index0);
+        assertEquals(sheet1, index1);
+    }
+    
+    @Test
+    public void illegalArgumentExceptionOnGetSheetByIndexThatDoesntExist() {
+        Workbook workbook = new OdsWorkbook();
+        try {
+            workbook.getSheetAt(56);
+        } catch (IllegalArgumentException ex) {
+            // contains the requested index
+            assertTrue(ex.getMessage().contains("56"));
+            // contains no off by one error
+            assertFalse(ex.getMessage().contains("-1"));
+        }
+    }
+    
+    @Test
+    public void sheetByIndexForExistingSheet() {
+        Workbook workbook = new OdsWorkbook(simpleSheetStream());
+        Sheet byIndex = workbook.getSheetAt(0);
+        assertEquals("A", byIndex.getSheetName());
+    }
+    
     private InputStream simpleSheetStream() {
         return getClass().getResourceAsStream("/simpleSheet.ods");
     }

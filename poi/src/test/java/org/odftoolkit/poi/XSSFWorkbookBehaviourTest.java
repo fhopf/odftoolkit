@@ -62,4 +62,11 @@ public class XSSFWorkbookBehaviourTest {
         Sheet sheet = workbook.getSheet("DoesntExist");
         assertNull(sheet);
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void illegalArgumentExceptionOnGetSheetByIndexThatDoesntExist() {
+        Workbook workbook = new XSSFWorkbook();
+        workbook.getSheetAt(12);
+    }
+    
 }
