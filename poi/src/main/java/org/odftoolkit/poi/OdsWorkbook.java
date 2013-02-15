@@ -120,8 +120,14 @@ public class OdsWorkbook implements Workbook {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Sheet getSheet(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Sheet getSheet(String name) {
+        Table table = doc.getSheetByName(name);
+        if (table == null) {
+            return null;
+        } else {
+            return new OdsSheet(this, table);
+        }
+        
     }
 
     public void removeSheetAt(int i) {

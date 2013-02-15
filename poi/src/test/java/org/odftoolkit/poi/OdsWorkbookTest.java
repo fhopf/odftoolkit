@@ -29,6 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNull;
 import org.junit.Ignore;
 
 /**
@@ -142,6 +143,30 @@ public class OdsWorkbookTest {
         Sheet sheet = workbook.createSheet();
         
         assertEquals("Sheet0", sheet.getSheetName());
+    }
+    
+    @Test
+    public void newlyCreatedSheetCanBeAccessedByName() {
+        OdsWorkbook workbook = new OdsWorkbook();
+        Sheet sheet = workbook.createSheet();
+        Sheet sheetByName = workbook.getSheet("Sheet0");
+        
+        assertEquals(sheet, sheetByName);
+    }
+    
+    @Test
+    public void existingSheetCanBeAccessedByName() {
+        OdsWorkbook workbook = new OdsWorkbook(simpleSheetStream());
+        Sheet sheetByName = workbook.getSheet("A");
+        
+        assertEquals("A", sheetByName.getSheetName());
+    }
+    
+    @Test
+    public void sheetByNameThatDoesntExistIsNull() {
+        Workbook workbook = new OdsWorkbook();
+        Sheet sheet = workbook.getSheet("DoesntExist");
+        assertNull(sheet);
     }
     
     private InputStream simpleSheetStream() {

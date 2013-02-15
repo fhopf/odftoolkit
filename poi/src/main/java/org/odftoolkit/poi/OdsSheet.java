@@ -456,5 +456,28 @@ public class OdsSheet implements Sheet {
     public Iterator<Row> iterator() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + (this.table != null ? this.table.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OdsSheet other = (OdsSheet) obj;
+        if (this.table != other.table && (this.table == null || !this.table.equals(other.table))) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }

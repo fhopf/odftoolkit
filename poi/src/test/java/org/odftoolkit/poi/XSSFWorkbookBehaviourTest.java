@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
@@ -53,5 +54,12 @@ public class XSSFWorkbookBehaviourTest {
         Sheet sheet = workbook.createSheet();
         assertNotNull(sheet.getSheetName());
         assertEquals("Sheet0", sheet.getSheetName());
+    }
+    
+    @Test
+    public void sheetByNameThatDoesntExistIsNull() {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.getSheet("DoesntExist");
+        assertNull(sheet);
     }
 }
