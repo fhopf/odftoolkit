@@ -69,4 +69,10 @@ public class XSSFWorkbookBehaviourTest {
         workbook.getSheetAt(12);
     }
     
+    @Test(expected=IllegalArgumentException.class)
+    public void illegalArgumentExceptionOnRemoveNonExistingSheet() {
+        Workbook workbook = new XSSFWorkbook();
+        workbook.removeSheetAt(12);
+    }
+    
 }

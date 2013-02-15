@@ -30,6 +30,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import org.junit.Ignore;
 
 /**
@@ -202,8 +203,40 @@ public class OdsWorkbookTest {
         assertEquals("A", byIndex.getSheetName());
     }
     
+    @Test
+    public void createdSheetCanBeRemoved() {
+        Workbook workbook = new OdsWorkbook();
+        workbook.createSheet();
+        assertFirstSheetCanBeRemoved(workbook);     
+    }
+    
+    @Test
+    public void existingSheetCanBeRemoved() {
+        Workbook workbook = new OdsWorkbook(simpleSheetStream());
+        assertFirstSheetCanBeRemoved(workbook);     
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void illegalArgumentExceptionOnRemoveNonExistingSheet() {
+        Workbook workbook = new OdsWorkbook();
+        workbook.removeSheetAt(12);
+    }
+    
     private InputStream simpleSheetStream() {
         return getClass().getResourceAsStream("/simpleSheet.ods");
+    }
+
+    private void assertFirstSheetCanBeRemoved(Workbook workbook) {
+        assertNotNull(workbook.getSheetAt(0));
+        
+        workbook.removeSheetAt(0);
+        
+        try {
+            workbook.getSheetAt(0);
+            fail("Sheet shouldn't be available after it is removed");
+        } catch (IllegalArgumentException ex) {
+            // expected as it doesn't exist
+        }
     }
     
     

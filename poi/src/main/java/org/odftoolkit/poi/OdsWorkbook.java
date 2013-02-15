@@ -119,14 +119,8 @@ public class OdsWorkbook implements Workbook {
     }
 
     public Sheet getSheetAt(int i) {
+        assertValidIndex(i);
         Table table = doc.getSheetByIndex(i);
-        if (table == null) {
-            String range = "-";
-            if (doc.getSheetCount() > 0) {
-                range = "0..." + doc.getSheetCount();
-            }
-            throw new IllegalArgumentException(String.format("Sheet at index %d doesn't exist. Available: %s", Integer.valueOf(i), range));
-        }
         return new OdsSheet(this, table);
     }
 
@@ -144,7 +138,8 @@ public class OdsWorkbook implements Workbook {
     }
 
     public void removeSheetAt(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assertValidIndex(i);
+        doc.removeSheet(i);
     }
 
     public void setRepeatingRowsAndColumns(int i, int i1, int i2, int i3, int i4) {
@@ -310,6 +305,17 @@ public class OdsWorkbook implements Workbook {
             name = "Sheet" + index;
         }
         return name;
+    }
+
+    private void assertValidIndex(int i) {
+        Table table = doc.getSheetByIndex(i);
+        if (table == null) {
+            String range = "-";
+            if (doc.getSheetCount() > 0) {
+                range = "0..." + doc.getSheetCount();
+            }
+            throw new IllegalArgumentException(String.format("Sheet at index %d doesn't exist. Available: %s", Integer.valueOf(i), range));
+        }
     }
     
 }
