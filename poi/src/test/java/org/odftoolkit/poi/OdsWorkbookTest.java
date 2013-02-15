@@ -242,11 +242,26 @@ public class OdsWorkbookTest {
         Sheet createdSheet = workbook.createSheet("name");
         assertEquals("name", createdSheet.getSheetName());
     }
+
+    @Test
+    public void numberOfSheetsForNoSheets() {
+        Workbook workbook = new OdsWorkbook();
+        assertEquals(0, workbook.getNumberOfSheets());
+    }
+
+    @Test
+    public void numberOfSheetsFor2Sheets() {
+        Workbook workbook = new OdsWorkbook();
+        workbook.createSheet();
+        workbook.createSheet();
+        assertEquals(2, workbook.getNumberOfSheets());
+    }
+    
     
     private InputStream simpleSheetStream() {
         return getClass().getResourceAsStream("/simpleSheet.ods");
     }
-
+    
     private void assertFirstSheetCanBeRemoved(Workbook workbook) {
         assertNotNull(workbook.getSheetAt(0));
         

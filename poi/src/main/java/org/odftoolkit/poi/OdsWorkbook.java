@@ -117,7 +117,7 @@ public class OdsWorkbook implements Workbook {
     }
 
     public int getNumberOfSheets() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return doc.getSheetCount();
     }
 
     public Sheet getSheetAt(int i) {
