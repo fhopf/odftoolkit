@@ -15,7 +15,15 @@
  */
 package org.odftoolkit.poi;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -23,8 +31,47 @@ import org.junit.Test;
  */
 public class OdsSheetTest {
     
-
+    @Test
+    @Ignore
+    public void emptySheetHasNoRows() {
+        assertEquals(0, emptySheet().getPhysicalNumberOfRows());
+    }
     
+    @Test
+    public void rowCanBeCreated() {
+        Sheet sheet = emptySheet();
+        Row row = sheet.createRow(0);
+        assertNotNull(row);
+        // TODO assertEquals
+    }
     
+    @Ignore("No way to add a row at a certain position")
+    @Test
+    public void rowCanBeAccessedByIndex() {
+        Sheet sheet = emptySheet();
+        Row row = sheet.createRow(0);
+        assertNotNull(row);
+        assertEquals(row.getRowNum(), sheet.getRow(0).getRowNum());
+    }
+    
+    @Ignore("Cells can't be removed")
+    @Test
+    public void newRowHasNoCells() {
+        Sheet sheet = emptySheet();
+        Row row = sheet.createRow(0);
+        assertEquals(0, row.getPhysicalNumberOfCells());
+    }
+    
+    @Test
+    public void sheetCanBeRetrievedFromRow() {
+        Sheet sheet = emptySheet();
+        Row row = sheet.createRow(0);
+        assertEquals(sheet, row.getSheet());
+    }
+    
+    private OdsSheet emptySheet() {
+        Workbook workbook = new OdsWorkbook();
+        return (OdsSheet) workbook.createSheet();
+    }
     
 }

@@ -50,7 +50,9 @@ public class OdsSheet implements Sheet {
     }
     
     public Row createRow(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // TODO this needs to be inserted at the index
+        org.odftoolkit.simple.table.Row appendedRow = table.appendRow();
+        return new OdsRow(this, appendedRow);
     }
 
     public void removeRow(Row row) {
@@ -58,11 +60,12 @@ public class OdsSheet implements Sheet {
     }
 
     public Row getRow(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        org.odftoolkit.simple.table.Row rowByIndex = table.getRowByIndex(i);
+        return new OdsRow(this, rowByIndex);
     }
 
     public int getPhysicalNumberOfRows() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return table.getRowCount();
     }
 
     public int getFirstRowNum() {

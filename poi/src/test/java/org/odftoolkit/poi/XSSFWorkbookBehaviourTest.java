@@ -89,5 +89,11 @@ public class XSSFWorkbookBehaviourTest {
         assertEquals(-1, workbook.getSheetIndex("nonExistingName"));
     }
     
+    @Test
+    public void newSheetHasNoRows() {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet createdSheet = workbook.createSheet();
+        assertEquals(0, createdSheet.getPhysicalNumberOfRows());
+    }
     
 }

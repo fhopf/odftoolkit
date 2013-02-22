@@ -109,6 +109,13 @@ public class OdsWorkbook implements Workbook {
 
     public Sheet createSheet(String name) {
         Table newTable = doc.appendSheet(name);
+        // POI doesn't append rows automatically
+//        while (newTable.getColumnCount() != 0) {
+//            newTable.removeColumnsByIndex(0, 1);
+//        }
+//        while (newTable.getRowCount() != 0) {
+//            newTable.removeRowsByIndex(0, 1);
+//        }
         return new OdsSheet(this, newTable);
     }
 

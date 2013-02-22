@@ -257,6 +257,14 @@ public class OdsWorkbookTest {
         assertEquals(2, workbook.getNumberOfSheets());
     }
     
+    @Ignore("Bug in SpreadsheetDocument, rows can't be removed")
+    @Test
+    public void newSheetHasNoRows() {
+        Workbook workbook = new OdsWorkbook();
+        Sheet createdSheet = workbook.createSheet();
+        assertEquals(0, createdSheet.getPhysicalNumberOfRows());
+    }
+    
     
     private InputStream simpleSheetStream() {
         return getClass().getResourceAsStream("/simpleSheet.ods");
