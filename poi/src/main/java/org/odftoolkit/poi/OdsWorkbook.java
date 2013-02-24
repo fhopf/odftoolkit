@@ -257,7 +257,7 @@ public class OdsWorkbook implements Workbook {
     }
 
     public CreationHelper getCreationHelper() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OdsCreationHelper();
     }
 
     public boolean isHidden() {

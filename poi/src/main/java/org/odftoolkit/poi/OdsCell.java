@@ -15,6 +15,8 @@
  */
 package org.odftoolkit.poi;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.poi.ss.formula.FormulaParseException;
@@ -67,11 +69,18 @@ class OdsCell implements Cell {
     }
 
     public void setCellValue(double d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        cell.setDoubleValue(d);
     }
 
     public void setCellValue(Date date) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // TODO timezone?
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        // libre office uses this format: 2012-02-24T09:30:00
+        cell.setDateValue(cal);
+        // set the correct format on the cell
+        DateFormat format = new SimpleDateFormat("yyyy-MM-ddzHH:mm:ss");
+        cell.getOdfElement().setOfficeDateValueAttribute(format.format(date));
     }
 
     public void setCellValue(Calendar clndr) {
@@ -79,7 +88,7 @@ class OdsCell implements Cell {
     }
 
     public void setCellValue(RichTextString rts) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        cell.setStringValue(rts.getString());
     }
 
     public void setCellValue(String string) {
@@ -95,15 +104,16 @@ class OdsCell implements Cell {
     }
 
     public double getNumericCellValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return cell.getDoubleValue();
     }
 
     public Date getDateCellValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // TODO fault tolerance?
+        return cell.getDateValue().getTime();
     }
 
     public RichTextString getRichStringCellValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OdsRichtextString(cell.getStringValue());
     }
 
     public String getStringCellValue() {
@@ -111,7 +121,7 @@ class OdsCell implements Cell {
     }
 
     public void setCellValue(boolean bln) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        cell.setBooleanValue(bln);
     }
 
     public void setCellErrorValue(byte b) {
@@ -119,7 +129,7 @@ class OdsCell implements Cell {
     }
 
     public boolean getBooleanCellValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return cell.getBooleanValue();
     }
 
     public byte getErrorCellValue() {
